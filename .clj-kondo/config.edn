@@ -1,0 +1,1 @@
+{:hooks {:analyze-call {cc.delboni.helix-flex.infra.helix/defnc clj-kondo.lilactown.helix/defnc}} }
