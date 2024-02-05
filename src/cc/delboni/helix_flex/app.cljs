@@ -5,7 +5,8 @@
             [cc.delboni.helix-flex.infra.helix :refer [defnc]]
             [helix.core :refer [$]]
             [helix.dom :as d]
-            [town.lilac.flex :as flex]))
+            [town.lilac.flex :as flex]
+            [town.lilac.flex.promise :as flex.promise.default]))
 
 (defn sleep [ms]
   (js/Promise.
@@ -27,6 +28,22 @@
                               (-> (sleep 1000)
                                   (.then #(update @(:value this) :counter inc))))
                             {:counter 0}))
+(def counter-default-async (flex/source {:counter 0
+                                         :loading? false
+                                         :error nil}))
+(def counter-default-async-inc-map
+  (flex.promise.default/resource
+   (fn []
+     (counter-default-async assoc :loading? true)
+     (-> (sleep 1000)
+         (.then #(do (counter-default-async assoc
+                                            :loading? false
+                                            :error nil)
+                     (counter-default-async update :counter inc)))
+         (.catch #(do (js/console.error %)
+                      (counter-default-async assoc
+                                             :loading? false
+                                             :error %)))))))
 
 ;; app
 (defnc app []
@@ -34,7 +51,8 @@
         counter-signal-flex (use-flex counter-signal)
         counter-map-flex (use-flex counter-map)
         counter-async-flex (use-flex counter-async-inc)
-        counter-async-map-flex (use-flex counter-async-inc-map)]
+        counter-async-map-flex (use-flex counter-async-inc-map)
+        counter-default-async-flex (use-flex counter-default-async)]
     (d/div
       (d/h1 "helix-flex")
       (d/div
@@ -51,7 +69,11 @@
       (d/div
         (d/h3 (str "Counter Async: " counter-async-map-flex))
         (d/button {:disabled (:loading? counter-async-map-flex)
-                   :on-click #(counter-async-inc-map)} "Count")))))
+                   :on-click #(counter-async-inc-map)} "Count"))
+      (d/div
+        (d/h3 (str "Counter Async Default: " counter-default-async-flex))
+        (d/button {:disabled (:loading? counter-default-async-flex)
+                   :on-click #(counter-default-async-inc-map)} "Count")))))
 
 ;; start your app with your React renderer
 (defn ^:export init []
