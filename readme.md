@@ -8,7 +8,8 @@ Start shadow-cljs watching and serving app and tests
 ```bash
 npm start
 ```
-> Main App available at http://localhost:5000  
+> Counter example available at http://localhost:5000  
+> Reitit routes example available at http://localhost:5000/routes  
 > Tests available at http://localhost:5001  
 
 ### CI Tests

@@ -3,6 +3,9 @@ resources/public/js
 resources/public/css
 resources/tests
 
+resources/public/routes/**
+!resources/public/routes/index.html
+
 /out
 /checkouts
 /src/gen

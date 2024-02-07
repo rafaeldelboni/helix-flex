@@ -12,6 +12,14 @@
                 :modules          {:main {:init-fn cc.delboni.helix-flex.app/init}}
                 :compiler-options {:install-deps true}}
 
+          :routes {:target           :browser
+                   :devtools         {:preloads [cc.delboni.helix-flex.dev.refresh]
+                                      :reload-strategy :full}
+                   :output-dir       "resources/public/routes"
+                   :asset-path       "/routes"
+                   :modules          {:main {:init-fn cc.delboni.helix-flex.routes/init}}
+                   :compiler-options {:install-deps true}}
+
           :tests {:target    :browser-test
                   :test-dir  "resources/tests"
                   :ns-regexp "-test$"}
