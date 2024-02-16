@@ -5,7 +5,7 @@
             [helix.core :refer [$]]
             [helix.dom :as d]
             [town.lilac.flex :as flex]
-            [town.lilac.flex.promise :as flex.promise.default]))
+            [town.lilac.flex.promise :as flex.promise]))
 
 (defn sleep [ms]
   (js/Promise.
@@ -22,7 +22,7 @@
   (flex/source {:counter 0}))
 
 (def counter-async-inc-map
-  (flex.promise.default/resource
+  (flex.promise/resource
    (fn []
      (-> (sleep 1000)
          (.then #(counter-default-async update :counter inc))
